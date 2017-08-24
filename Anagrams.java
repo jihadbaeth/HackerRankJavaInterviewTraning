@@ -1,36 +1,44 @@
-import java.io.*;
-import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
-import java.io.*;
-import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Anagrams {
     public static int numberNeeded(String first, String second) {
+        int numberNeeded = 0;
+        ArrayList<Integer> holder = new ArrayList<>();
+        StringBuilder firstBuilder = null;
+        StringBuilder secondBuilder = null;
+        if (first.length() >= second.length()) {
+            firstBuilder = new StringBuilder(first);
+            secondBuilder = new StringBuilder(second);
+        } else {
+            firstBuilder = new StringBuilder(second);
+            secondBuilder = new StringBuilder(first);
+        }
 
-        StringBuilder firstBuilder = new StringBuilder(first);
-        StringBuilder secondBuilder = new StringBuilder(second);
-        int numberNeeded = firstBuilder.length() + secondBuilder.length();
 
         for (int i = 0; i < first.length(); i++) {
 
-            char currentChar = first.charAt(i);
+            char charToCompare = first.charAt(i);
 
-            for (int j = 0; j < secondBuilder.length(); j++) {
-                char charToCompare = secondBuilder.charAt(j);
 
-                if (charToCompare == currentChar) {
-                    firstBuilder.deleteCharAt(0);
-                    secondBuilder.deleteCharAt(j);
-                    numberNeeded -= 2;
-                    break;
+            if (firstBuilder.indexOf("" + charToCompare) > -1 && secondBuilder.indexOf("" + charToCompare) > -1) {
+                firstBuilder.deleteCharAt(firstBuilder.indexOf("" + charToCompare));
+                secondBuilder.deleteCharAt(secondBuilder.indexOf("" + charToCompare));
+
+            } else {
+                if (firstBuilder.indexOf("" + charToCompare) > -1) {
+                    firstBuilder.deleteCharAt(firstBuilder.indexOf("" + charToCompare));
+                    numberNeeded++;
+                }
+
+                if (secondBuilder.indexOf("" + charToCompare) > -1) {
+                    secondBuilder.deleteCharAt(secondBuilder.indexOf("" + charToCompare));
+                    numberNeeded++;
                 }
             }
+
         }
+        numberNeeded = numberNeeded + firstBuilder.length() + secondBuilder.length();
 
         return numberNeeded;
 
