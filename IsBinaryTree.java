@@ -26,7 +26,11 @@ public class IsBinaryTree {
         tree.root.right = new Node(5);
         tree.root.left.left = new Node(1);
         tree.root.left.right = new Node(3);
-
+        tree.root.left.right.left = new Node(1);
+        tree.root.left.right.right = new Node(4);
+        int[] allData = tree.convertToIntArray(tree.root);
+        System.out.println(tree.checkDuplicates(allData));
+        ;
 
         if (tree.checkBST(tree.root))
             System.out.println("IS BST");
@@ -34,48 +38,72 @@ public class IsBinaryTree {
             System.out.println("Not a BST");
     }
 
+    int[] convertToIntArray(Node root) {
+        ArrayList<Node> tree = new ArrayList<Node>();
+        if (root != null) {
+            tree.add(root);
+            if (root.left != null && root.right != null) {
+                convertToIntArray(root.right);
+                convertToIntArray(root.left);
+            }
+        }
+
+
+        int[] allData = new int[tree.size()];
+        for (int n = 0; n < tree.size(); n++) {
+            allData[n] = tree.get(n).data;
+            System.out.println(allData[n]);
+
+        }
+
+
+        return allData;
+    }
+
+    boolean checkDuplicates(int[] allData) {
+
+        for (int i = 0; i < allData.length; i++) {
+
+            for (int x = i + 1; x < allData.length; x++) {
+                System.out.println("Testing " + allData[i] + " Against " + allData[x]);
+
+                if (allData[i] == allData[x]) {
+                    System.out.println("Duplicate Found!");
+                    return true;
+
+                }
+            }
+        }
+        return false;
+    }
+
+
+    boolean checkTree(Node root) {
+
+        if (root != null) {
+            if (root.left != null && root.right != null) {
+                if (root.left.data < root.data && root.right.data > root.data) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return (checkBST(root.left) && checkBST(root.right));
+
+    }
 
     boolean checkBST(Node root) {
-        if (root == null) {
-            return true;
+
+        if (root != null) {
+            return checkTree(root);
+        } else {
+            return false;
         }
 
-        return check(root).bst;
+
     }
-
-    Result check(Node node) {
-        int min = node.data;
-        int max = node.data;
-
-        if (node.left != null) {
-            Result leftResult = check(node.left);
-            if (!leftResult.bst || leftResult.max >= node.data) {
-                return new Result(false, 0, 0);
-            }
-            min = leftResult.min;
-        }
-        if (node.right != null) {
-            Result rightResult = check(node.right);
-            if (!rightResult.bst || rightResult.min <= node.data) {
-                return new Result(false, 0, 0);
-            }
-            max = rightResult.max;
-        }
-
-        return new Result(true, min, max);
-    }
-
-
-    class Result {
-        boolean bst;
-        int min;
-        int max;
-
-        Result(boolean bst, int min, int max) {
-            this.bst = bst;
-            this.min = min;
-            this.max = max;
-        }
-    }
-
 }
+
