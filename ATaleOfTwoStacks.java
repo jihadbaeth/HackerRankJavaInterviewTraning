@@ -28,6 +28,7 @@ public class ATaleOfTwoStacks {
         Stack<T> stackNewestOnTop = new Stack<T>();
         Stack<T> stackOldestOnTop = new Stack<T>();
 
+
         public Stack<T> reverse(Stack source) {
             Stack destination = new Stack<T>();
             while (!source.isEmpty()) {
@@ -60,3 +61,29 @@ public class ATaleOfTwoStacks {
         }
     }
 }
+
+//Correct Optimized Solution
+//
+//    public void enqueue(T item) {
+//        stackNewestOnTop.push(item);
+//    }
+//
+//    public T dequeue() {
+//        if (stackOldestOnTop.isEmpty()) {
+//            while (!stackNewestOnTop.empty()) {
+//                stackOldestOnTop.push(stackNewestOnTop.pop());
+//            }
+//        }
+//
+//        return stackOldestOnTop.pop();
+//    }
+//
+//    public T peek() {
+//        if (stackOldestOnTop.isEmpty()) {
+//            while (!stackNewestOnTop.empty()) {
+//                stackOldestOnTop.push(stackNewestOnTop.pop());
+//            }
+//        }
+//
+//        return stackOldestOnTop.peek();
+//    }
